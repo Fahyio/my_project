@@ -1,0 +1,94 @@
+# Базовый класс Транспорт
+class Transport:
+    def __init__(self, brand, speed):
+        self.brand = brand  # Марка транспорта
+        self.speed = speed  # Скорость в км/ч
+
+    def move(self):
+        print(f"Транспорт движется со скоростью {self.speed} км/ч")
+
+    def __str__(self):
+        return f"Транспорт: {self.brand}, Скорость: {self.speed} км/ч"
+
+
+# Класс Автомобиль, наследуется от Транспорта
+class Car(Transport):
+    def __init__(self, brand, speed, seats):
+        super().__init__(brand, speed)  # Вызов конструктора родительского класса
+        self.seats = seats  # Количество мест
+
+    def honk(self):
+        print("beep beep!")  # Сигнал автомобиля
+
+    def move(self):
+        # Переопределение метода move для автомобиля
+        print(f"Автомобиль {self.brand} едет со скоростью {self.speed} км/ч")
+
+    def __str__(self):
+        return f"Автомобиль: {self.brand}, Скорость: {self.speed} км/ч, Мест: {self.seats}"
+
+    def __len__(self):
+        # Возвращает количество мест в автомобиле
+        return self.seats
+
+    def __eq__(self, other):
+        # Сравнение автомобилей по скорости
+        if not isinstance(other, Car):
+            return NotImplemented
+        return self.speed == other.speed
+
+    def __add__(self, other):
+        # Сложение скоростей двух автомобилей
+        if not isinstance(other, Car):
+            return NotImplemented
+        return self.speed + other.speed
+
+
+# Класс Велосипед, наследуется от Транспорта
+class Bike(Transport):
+    def __init__(self, brand, speed, type):
+        super().__init__(brand, speed)  # Вызов конструктора родительского класса
+        self.type = type  # Тип велосипеда
+
+    def move(self):
+        # Переопределение метода move для велосипеда
+        print(f"Велосипед {self.brand} едет со скоростью {self.speed} км/ч")
+
+    def __str__(self):
+        return f"Велосипед: {self.brand}, Скорость: {self.speed} км/ч, Тип: {self.type}"
+
+
+# Создание объектов разных классов
+tr_1 = Transport("Игрушка", 90)      # Обычный транспорт
+tr_2 = Transport('Мерседес', 120)    # Обычный транспорт
+car_1 = Car("Хермит", 80, 5)         # Автомобиль с 5 местами
+car_2 = Car('ССС+', 80, 4)           # Автомобиль с 4 местами
+bike_1 = Bike("ААА", 100, 'спортивный')  # Спортивный велосипед
+bike_2 = Bike('Ниндзя', 130, 'дорожный') # Дорожный велосипед
+
+# Вывод информации о транспорте
+print(tr_1)
+print(car_1)
+print(bike_1)
+print()
+
+# Демонстрация движения транспорта
+car_1.move()
+bike_1.move()
+print()
+
+# Сигнал автомобиля
+car_2.honk()
+print()
+
+# Демонстрация магических методов
+print(f"Количество мест в car_1: {len(car_1)}")
+print(f"car_1 и car_2 имеют одинаковую скорость: {car_1 == car_2}")
+print(f"Сумма скоростей car_1 и car_2: {car_1 + car_2} км/ч")
+print()
+
+# Демонстрация полиморфизма - разные объекты ведут себя по-разному
+transport_list = [car_1, bike_1, tr_1]  # Список разного транспорта
+print("Движение всего транспорта в списке:")
+for transport in transport_list:
+    transport.move()  # Каждый транспорт движется по-своему
