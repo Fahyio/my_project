@@ -1,0 +1,151 @@
+#1. List comprehension (простое преобразование)
+# Создаем список квадратов чисел от 1 до 10
+squares = [x ** 2 for x in range(1, 11)]
+print("1. Квадраты чисел:", squares)
+
+# 2. List comprehension (фильтрация)
+# Берем только четные числа из диапазона 1-19
+even_numbers = [x for x in range(1, 20) if x % 2 == 0]
+print("2. Чётные числа:", even_numbers)
+
+#3. List comprehension (работа со строками)
+# Преобразуем слова: в верхний регистр и длиннее 3 символов
+words = ["python", "Java", "c++", "Rust", "go"]
+filtered_words = [word.upper() for word in words if len(word) > 3]
+print("3. Отфильтрованные слова:", filtered_words)
+
+
+#4. Собственный итератор
+class Countdown:
+    def __init__(self, n):
+        self.n = n  # Начальное значение
+
+    def iter__(self): # __iter - возвращает сам объект как итератор
+        return self
+
+    def next__(self): #__next - возвращает следующее значение и уменьшает счетчик
+        if self.n == 0:
+            raise StopIteration  # Завершаем итерацию
+        current = self.n
+        self.n -= 1  # Уменьшаем счетчик
+        return current
+
+
+print("4. Countdown:")
+for x in Countdown(5):
+    print(x, end=" ")
+print()
+
+
+#5. Собственный генератор
+def fibonacci(n):
+    a, b = 0, 1  # Первые два числа Фибоначчи
+    for _ in range(n):
+        yield a  # Возвращаем текущее число
+        a, b = b, a + b  # Обновляем значения для следующего числа
+
+
+print("5. Числа Фибоначчи:")
+for num in fibonacci(5):
+    print(num, end=" ")
+print()
+
+#6. Decimal (точные вычисления)
+# Точные вычисления для финансовых операций
+from decimal import Decimal
+
+
+def calculate_deposit():
+    # Ввод данных
+    P = Decimal(input("Начальная сумма вклада: "))
+    r = Decimal(input("Процентная ставка: "))
+    t = Decimal(input("Срок вклада (лет): "))
+
+    # Формула сложных процентов с ежемесячной капитализацией
+    S = P * (1 + r / (12 * 100)) ** (12 * t)
+    profit = S - P  # Расчет прибыли
+
+    print(f"Итоговая сумма: {S:.2f} руб.")
+    print(f"Общая прибыль: {profit:.2f} руб.")
+
+
+
+calculate_deposit()
+
+#7. Fraction (рациональные дроби)
+# Работа с дробями без потери точности
+from fractions import Fraction
+
+
+frac1 = Fraction(3, 4)
+frac2 = Fraction(5, 6)
+
+# Выполняем арифметические операции
+add_result = frac1 + frac2
+sub_result = frac1 - frac2
+mul_result = frac1 * frac2
+div_result = frac1 / frac2
+
+print("7. Дроби:")
+print(f"Сложение: {add_result}")
+print(f"Вычитание: {sub_result}")
+print(f"Умножение: {mul_result}")
+print(f"Деление: {div_result}")  # Автоматически несократимая дробь
+
+#8. DateTime (текущая дата и время)
+from datetime import datetime
+
+now = datetime.now()  # Текущие дата и время
+
+print("8. Дата и время:")
+print("Текущая дата и время:", now)  # Полная дата и время
+print("Только дата:", now.date())  # Только дата (год-месяц-день)
+print("Только время:", now.time())  # Только время (часы:минуты:секунды)
+
+
+#9. DateTime (разница дат)
+def calculate_birthday_days():
+    # ЗАМЕНИТЕ НА СВОЮ ДАТУ РОЖДЕНИЯ!
+    birthday = datetime(2005, 12, 16)
+    today = datetime.now().date()  # Сегодняшняя дата
+
+    # День рождения в этом году
+    birthday_this_year = datetime(today.year, birthday.month, birthday.day).date()
+
+    # Сколько дней прошло с рождения
+    days_passed = (today - birthday.date()).days
+
+    # Расчет дней до следующего дня рождения
+    if birthday_this_year > today:
+        # День рождения еще в этом году
+        days_until_next = (birthday_this_year - today).days
+    else:
+        # День рождения считаем до следующего года
+        birthday_next_year = datetime(today.year + 1, birthday.month, birthday.day).date()
+        days_until_next = (birthday_next_year - today).days
+
+    print(f"9. Дней с рождения: {days_passed}")
+    print(f"Дней до следующего дня рождения: {days_until_next}")
+
+
+calculate_birthday_days()
+
+#10. DateTime (форматирование строк)
+def format_datetime(dt):
+    # Словарь для перевода месяцев на русский
+    months = {
+        1: "января", 2: "февраля", 3: "марта", 4: "апреля",
+        5: "мая", 6: "июня", 7: "июля", 8: "августа",
+        9: "сентября", 10: "октября", 11: "ноября", 12: "декабря"
+    }
+
+Санечка, [17.10.2025 23:06]
+# Извлекаем компоненты даты
+    day = dt.day
+    month = months[dt.month]  # Получаем русское название месяца
+    year = dt.year
+    time = dt.strftime("%H:%M")  # Форматируем время
+
+    return f"Сегодня {day} {month} {year} года, время: {time}"
+
+print("10.", format_datetime(datetime.now()))
